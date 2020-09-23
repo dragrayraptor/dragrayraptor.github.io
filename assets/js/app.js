@@ -1,35 +1,33 @@
-$(function() {
+window.onload = function() {
 
-    var header = $("#header"),
-        introH = $("#intro").innerHeight(),
-        scrollOffset = $(window).scrollTop();
+    var header = document.querySelector("#header");
+        introH = document.querySelector("#intro").clientHeight;
 
-    checkScroll(scrollOffset);
+    checkScroll(pageYOffset);
 
-    $(window).on("scroll", function() {
-        scrollOffset = $(this).scrollTop();
-
-        checkScroll(scrollOffset);
-    });
+    window.addEventListener('scroll', function() {
+        checkScroll(pageYOffset);
+      });
 
     function checkScroll(scrollOffset) {
         if( scrollOffset >= introH ) {
-            header.addClass("fixed");
+            header.classList.add("fixed");
         } else {
-            header.removeClass("fixed");
+            header.classList.remove("fixed");
         }
     }
 
-    $("[data-scroll]").on("click", function(event) {
-        event.preventDefault();
+    const nav_links = document.querySelectorAll("[data-scroll]");
+    for (const nav_link of nav_links) {
+        nav_link.onclick = function(event) {
+            event.preventDefault();
+    
+            var blockId = this.dataset.scroll;
 
-        var $this = $(this),
-            blockId = $this.data('scroll'),
-            blockOffset = $(blockId).offset().top;
+            document.querySelector(blockId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        };
+    }
 
-        $("html, body").animate({
-            scrollTop:  blockOffset
-        }, 500);
-    });
-
-});
+};
